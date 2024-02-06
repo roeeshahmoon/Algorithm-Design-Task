@@ -1,14 +1,111 @@
-from node_class import Node
-from tree_class import Tree
+from collections import deque
 
-"""
-Pseudocode:
-1. Take a string and determine the relevant frequencies of the characters
-2. Build and sort a list of tuples from lowest to highest frequencies
-3. Build the Huffman Tree by assigning a binary code to each letter, using shorter codes for the more frequent letters
-4. Trim the Huffman Tree (remove the frequencies from the previously built tree)
-5. Encode the text into its compressed form
-"""
+class Node(object):
+    def __init__(self, value=None):
+        self.value = value
+        self.left = None
+        self.right = None
+
+    def set_value(self, value):
+        self.value = value
+
+    def get_value(self):
+        return self.value
+
+    def set_left_child(self, left):
+        self.left = left
+
+    def set_right_child(self, right):
+        self.right = right
+
+    def get_left_child(self):
+        return self.left
+
+    def get_right_child(self):
+        return self.right
+
+    def has_left_child(self):
+        return self.left != None
+
+    def has_right_child(self):
+        return self.right != None
+
+    def __repr__(self):
+        return f"Node({self.get_value()})"
+
+    def __str__(self):
+        return f"Node({self.get_value()})"
+
+class Queue:
+
+    def __init__(self):
+        self.q = deque()
+
+    def enq(self, value):
+        self.q.appendleft(value)
+
+    def deq(self):
+        if len(self.q) > 0:
+            return self.q.pop()
+        else:
+            return None
+
+    def __len__(self):
+        return len(self.q)
+
+    def __repr__(self):
+        if len(self.q) > 0:
+            s = "<enqueue here>\n_________________\n"
+            s += "\n_________________\n".join([str(item) for item in self.q])
+            s += "\n_________________\n<dequeue here>"
+            return s
+        else:
+            return "<queue is empty>"
+
+class Tree:
+
+    def __init__(self):
+        self.root = None
+
+    def set_root(self, value):
+        self.root = Node(value)
+
+    def get_root(self):
+        return self.root
+
+    def __repr__(self):
+        level = 0
+        q = Queue()
+        visit_order = list()
+        node = self.get_root()
+        q.enq((node, level))
+        while (len(q) > 0):
+            node, level = q.deq()
+            if node == None:
+                visit_order.append(("<empty>", level))
+                continue
+            visit_order.append((node, level))
+            if node.has_left_child():
+                q.enq((node.get_left_child(), level + 1))
+            else:
+                q.enq((None, level + 1))
+
+            if node.has_right_child():
+                q.enq((node.get_right_child(), level + 1))
+            else:
+                q.enq((None, level + 1))
+
+        s = "Tree\n"
+        previous_level = -1
+        for i in range(len(visit_order)):
+            node, level = visit_order[i]
+            if level == previous_level:
+                s += " | " + str(node)
+            else:
+                s += "\n" + str(node)
+                previous_level = level
+
+        return s
 
 def return_frequency(data):
     # Take a string and determine the relevant frequencies of the characters
@@ -96,27 +193,6 @@ def huffman_encoding_func(data):
         codes += dict[char]
     return tree, codes
 
-
-# The function traverses over the encoded data and checks if a certain piece of binary code could actually be a letter
-def huffman_decoding_func(data, tree):
-    if data == '':
-        return ''
-    dict = get_codes(tree.root)
-    reversed_dict = {}
-    for value, key in dict.items():
-        reversed_dict[key] = value
-    start_index = 0
-    end_index = 1
-    max_index = len(data)
-    s = ''
-
-    while start_index != max_index:
-        if data[start_index: end_index] in reversed_dict:
-            s += reversed_dict[data[start_index : end_index]]
-            start_index = end_index
-        end_index += 1
-
-    return s
 
 
 
