@@ -1,5 +1,6 @@
 from collections import deque
 
+
 class Node(object):
     def __init__(self, value=None):
         self.value = value
@@ -36,6 +37,7 @@ class Node(object):
     def __str__(self):
         return f"Node({self.get_value()})"
 
+
 class Queue:
 
     def __init__(self):
@@ -61,6 +63,7 @@ class Queue:
             return s
         else:
             return "<queue is empty>"
+
 
 class Tree:
 
@@ -106,6 +109,21 @@ class Tree:
                 previous_level = level
 
         return s
+
+
+def inorder_traversal(root, lst_res: []):
+    if root:
+        inorder_traversal(root.left, lst_res)
+        lst_res.append(root.value)
+        inorder_traversal(root.right, lst_res)
+
+
+def preorder_traversal(root, lst_res: []):
+    if root:
+        lst_res.append(root.value)
+        preorder_traversal(root.left, lst_res)
+        preorder_traversal(root.right, lst_res)
+
 
 def return_frequency(data):
     # Take a string and determine the relevant frequencies of the characters
@@ -161,6 +179,7 @@ def build_tree(data):
     tree.root = root
     return tree
 
+
 # the function traverses over the huffman tree and returns a dictionary with letter as keys and binary value and value.
 # function get_codes() is for encoding purposes
 def get_codes(root):
@@ -194,6 +213,15 @@ def huffman_encoding_func(data):
     return tree, codes
 
 
+sentences_file = open("Alice_in_wonderlands.txt", "r")
+sentences = sentences_file.read()
 
+print("fie:", sentences, sep='\n')
+print("-" * 200, '\n')
 
+print("Encoding State: ")
+tree, encoded_data = huffman_encoding_func(sentences)
+print('->', encoded_data)
 
+with open('file_encoded.txt', 'w') as file_encoded:
+    file_encoded.write(encoded_data)

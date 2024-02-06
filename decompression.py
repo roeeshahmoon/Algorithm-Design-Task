@@ -20,3 +20,4 @@ def huffman_decoding_func(data, tree):
         end_index += 1
 
     return s
+
