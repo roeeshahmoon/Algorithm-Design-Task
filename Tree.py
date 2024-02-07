@@ -137,7 +137,7 @@ def return_frequency(data):
     lst.sort(reverse=True)
     return lst
 
-def BuildTreee(inorder, preorder):
+def Build_Tree_Traversal(inorder, preorder):
     if not preorder or not inorder:
         return None
 
@@ -145,8 +145,8 @@ def BuildTreee(inorder, preorder):
     root = Node(root_val)
     root_idx = inorder.index(root_val)
 
-    root.left = BuildTreee(inorder[:root_idx], preorder[:root_idx])
-    root.right = BuildTreee(inorder[root_idx + 1:], preorder[root_idx:])
+    root.left = Build_Tree_Traversal(inorder[:root_idx], preorder[:root_idx])
+    root.right = Build_Tree_Traversal(inorder[root_idx + 1:], preorder[root_idx:])
 
     return root
 
@@ -181,7 +181,7 @@ print('lst_inorder: ', lst_inorder, '\n')
 preorder_traversal(root, lst_preorder)
 print("lst_preorder: ", lst_preorder, '\n')
 
-root = BuildTreee(lst_inorder, lst_preorder)
+root = Build_Tree_Traversal(lst_inorder, lst_preorder)
 
 tree = Tree()
 tree.root = root

@@ -1,6 +1,6 @@
-from compression import get_codes, Node
+from compression import get_codes, Node, Tree
 
-def BuildTreee(preorder, inorder):
+def Build_Tree_Traversal(inorder, preorder):
     if not preorder or not inorder:
         return None
 
@@ -8,10 +8,11 @@ def BuildTreee(preorder, inorder):
     root = Node(root_val)
     root_idx = inorder.index(root_val)
 
-    root.left = BuildTreee(preorder[:root_idx], inorder[:root_idx])
-    root.right = BuildTreee(preorder[root_idx:], inorder[root_idx + 1:])
-
+    root.left = Build_Tree_Traversal(inorder[:root_idx], preorder[:root_idx])
+    root.right = Build_Tree_Traversal(inorder[root_idx + 1:], preorder[root_idx:])
     return root
+
+
 # The function traverses over the encoded data and checks if a certain piece of binary code could actually be a letter
 def huffman_decoding_func(data: str, tree_root: Node):
     if data == '':
@@ -33,3 +34,33 @@ def huffman_decoding_func(data: str, tree_root: Node):
 
     return s
 
+
+def read_list(content):
+    result = []
+    parts = content.split('#')
+    for part in parts:
+        if part != '\n':
+            num, char = part.split('~')
+            if char == '*':
+                char = "\n"
+            result.append((int(num), char.strip("'")))
+        else:
+            return result
+
+
+print("Decoding State: ")
+undecoded_data = []
+with open('/Users/roeeshahmoon/PycharmProjects/Huffman_Code/file_encoded.txt', 'r') as file_input:
+    undecoded_data = file_input.readlines()
+    lst_inorder = read_list(undecoded_data[1])
+    lst_preorder = read_list(undecoded_data[2])
+# print('-->', undecoded_data)
+
+root_build = Build_Tree_Traversal(lst_inorder, lst_preorder)
+tree_build = Tree()
+tree_build.root = root_build
+print(tree_build)
+
+decoded_data = huffman_decoding_func(undecoded_data[0], root_build)
+with open('/Users/roeeshahmoon/PycharmProjects/Huffman_Code/file_decoded.txt', 'w') as file_decoded:
+    file_decoded.write(decoded_data)
