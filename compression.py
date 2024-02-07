@@ -1,6 +1,5 @@
 from collections import deque
 
-
 class Node(object):
     def __init__(self, value=None):
         self.value = value
