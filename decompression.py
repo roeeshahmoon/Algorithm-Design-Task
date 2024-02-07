@@ -61,7 +61,7 @@ def main():
     tree_build.root = root_build
     print(tree_build)
 
-    decoded_data = huffman_decoding_func(undecoded_data[0], root_build)
+    decoded_data = huffman_decoding_func(undecoded_data[0][:-1], root_build)
     with open('/Users/roeeshahmoon/PycharmProjects/Huffman_Code/file_decoded.txt', 'w') as file_decoded:
         file_decoded.write(decoded_data)
 
