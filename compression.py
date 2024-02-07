@@ -1,4 +1,10 @@
 from collections import deque
+""""
+    Assignment Algorithm Design – Programming Assignment
+    Author: Roee Shahmoon, ID: 206564759
+    Author: Noam Klainer, ID: 316015411
+"""
+
 
 class Node(object):
     def __init__(self, value=None):
@@ -25,10 +31,10 @@ class Node(object):
         return self.right
 
     def has_left_child(self):
-        return self.left != None
+        return self.left is not None
 
     def has_right_child(self):
-        return self.right != None
+        return self.right is not None
 
     def __repr__(self):
         return f"Node({self.get_value()})"
@@ -81,9 +87,9 @@ class Tree:
         visit_order = list()
         node = self.get_root()
         q.enq((node, level))
-        while (len(q) > 0):
+        while len(q) > 0:
             node, level = q.deq()
-            if node == None:
+            if node is None:
                 visit_order.append(("<empty>", level))
                 continue
             visit_order.append((node, level))
@@ -197,13 +203,14 @@ def huffman_encode(data):
     if data == '':
         return None, ''
     tree = build_tree(data)
-    dict = get_codes(tree.root)
+    dict_codes = get_codes(tree.root)
     codes = ''
     for char in data:
-        codes += dict[char]
+        codes += dict_codes[char]
     return tree, codes
 
-def Build_Tree_Traversal(inorder, preorder):
+
+def build_tree_traversal(inorder, preorder):
     if not preorder or not inorder:
         return None
 
@@ -211,10 +218,11 @@ def Build_Tree_Traversal(inorder, preorder):
     root = Node(root_val)
     root_idx = inorder.index(root_val)
 
-    root.left = Build_Tree_Traversal(inorder[:root_idx], preorder[:root_idx])
-    root.right = Build_Tree_Traversal(inorder[root_idx + 1:], preorder[root_idx:])
+    root.left = build_tree_traversal(inorder[:root_idx], preorder[:root_idx])
+    root.right = build_tree_traversal(inorder[root_idx + 1:], preorder[root_idx:])
 
     return root
+
 
 def main():
     sentences_file = open("/Users/roeeshahmoon/PycharmProjects/Huffman_Code/Alice_in_wonderlands.txt", "r")
@@ -254,10 +262,11 @@ def main():
             file_encoded.write('#')
         file_encoded.write('\n')
 
-    root_build = Build_Tree_Traversal(lst_inorder, lst_preorder)
+    root_build = build_tree_traversal(lst_inorder, lst_preorder)
     tree_build = Tree()
     tree_build.root = root_build
     print('\n', tree_build)
+
 
 if __name__ == "__main__":
     main()
