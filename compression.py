@@ -224,51 +224,54 @@ def Build_Tree_Traversal(inorder, preorder):
 
     return root
 
+def main():
+    sentences_file = open("/Users/roeeshahmoon/PycharmProjects/Huffman_Code/data.txt", "r")
+    sentences = sentences_file.read()
 
-sentences_file = open("/Users/roeeshahmoon/PycharmProjects/Huffman_Code/data.txt", "r")
-sentences = sentences_file.read()
+    # print("file:", sentences, sep='\n')
+    # print("-" * 200, '\n')
 
-# print("file:", sentences, sep='\n')
-# print("-" * 200, '\n')
+    print("Encoding State: ")
+    tree_encoded, encoded_data = huffman_encoding_func(sentences)
+    # print('->', encoded_data)
 
-print("Encoding State: ")
-tree_encoded, encoded_data = huffman_encoding_func(sentences)
-# print('->', encoded_data)
+    lst_inorder = []
+    lst_preorder = []
+    inorder_traversal(tree_encoded.root, lst_inorder)
+    preorder_traversal(tree_encoded.root, lst_preorder)
+    print(lst_inorder)
+    print(lst_preorder)
 
-lst_inorder = []
-lst_preorder = []
-inorder_traversal(tree_encoded.root, lst_inorder)
-preorder_traversal(tree_encoded.root, lst_preorder)
-print(lst_inorder)
-print(lst_preorder)
+    with open('/Users/roeeshahmoon/PycharmProjects/Huffman_Code/file_encoded.txt', 'w') as file_encoded:
+        file_encoded.write(encoded_data)
+        file_encoded.write('\n')
 
-with open('/Users/roeeshahmoon/PycharmProjects/Huffman_Code/file_encoded.txt', 'w') as file_encoded:
-    file_encoded.write(encoded_data)
-    file_encoded.write('\n')
+        for elm_in in lst_inorder:
+            num = str(elm_in[0])
+            file_encoded.write(num)
+            file_encoded.write('~')
+            char = elm_in[1]
+            if char == "\n":
+                char = '*'
+            file_encoded.write(char)
+            file_encoded.write('#')
+        file_encoded.write('\n')
 
-    for elm_in in lst_inorder:
-        num = str(elm_in[0])
-        file_encoded.write(num)
-        file_encoded.write('~')
-        char = elm_in[1]
-        if char == "\n":
-            char = '*'
-        file_encoded.write(char)
-        file_encoded.write('#')
-    file_encoded.write('\n')
+        for elm_pre in lst_preorder:
+            num = str(elm_pre[0])
+            file_encoded.write(num)
+            file_encoded.write('~')
+            char = elm_pre[1]
+            if char == "\n":
+                char = '*'
+            file_encoded.write(char)
+            file_encoded.write('#')
+        file_encoded.write('\n')
 
-    for elm_pre in lst_preorder:
-        num = str(elm_pre[0])
-        file_encoded.write(num)
-        file_encoded.write('~')
-        char = elm_pre[1]
-        if char == "\n":
-            char = '*'
-        file_encoded.write(char)
-        file_encoded.write('#')
-    file_encoded.write('\n')
+    root_build = Build_Tree_Traversal(lst_inorder, lst_preorder)
+    tree_build = Tree()
+    tree_build.root = root_build
+    print(tree_build)
 
-root_build = Build_Tree_Traversal(lst_inorder, lst_preorder)
-tree_build = Tree()
-tree_build.root = root_build
-print(tree_build)
+if __name__ == "__main__":
+    main()
