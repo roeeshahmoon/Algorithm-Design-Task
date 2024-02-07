@@ -1,5 +1,6 @@
 from compression import get_codes, Node, Tree
 
+
 def Build_Tree_Traversal(inorder, preorder):
     if not preorder or not inorder:
         return None
@@ -13,8 +14,7 @@ def Build_Tree_Traversal(inorder, preorder):
     return root
 
 
-# The function traverses over the encoded data and checks if a certain piece of binary code could actually be a letter
-def huffman_decoding_func(data: str, tree_root: Node):
+def huffman_decode(data: str, tree_root: Node):
     if data == '':
         return ''
     dict = get_codes(tree_root)
@@ -41,29 +41,30 @@ def read_list(content):
     for part in parts:
         if part != '\n':
             num, char = part.split('~')
-            if char == '*':
-                char = "\n"
-            result.append((int(num), char.strip("'")))
+            char = char.replace('$', '\n')
+            result.append((int(num), char))
         else:
             return result
 
+
 def main():
-    print("Decoding State: ")
-    undecoded_data = []
+    print("Decoding State:\n")
     with open('/Users/roeeshahmoon/PycharmProjects/Huffman_Code/file_encoded.txt', 'r') as file_input:
         undecoded_data = file_input.readlines()
         lst_inorder = read_list(undecoded_data[1])
         lst_preorder = read_list(undecoded_data[2])
-    # print('-->', undecoded_data)
+    print("lst_inorder:", lst_inorder)
+    print("lst_preorder:", lst_preorder)
 
     root_build = Build_Tree_Traversal(lst_inorder, lst_preorder)
     tree_build = Tree()
     tree_build.root = root_build
-    print(tree_build)
+    print('\n', tree_build)
 
-    decoded_data = huffman_decoding_func(undecoded_data[0][:-1], root_build)
+    decoded_data = huffman_decode(undecoded_data[0][:-1], root_build)
     with open('/Users/roeeshahmoon/PycharmProjects/Huffman_Code/file_decoded.txt', 'w') as file_decoded:
         file_decoded.write(decoded_data)
+
 
 if __name__ == "__main__":
     main()

@@ -125,7 +125,6 @@ def preorder_traversal(root, lst_res: []):
 
 
 def return_frequency(data):
-    # Take a string and determine the relevant frequencies of the characters
     frequency = {}
     for char in data:
         if char in frequency:
@@ -133,12 +132,10 @@ def return_frequency(data):
         else:
             frequency[char] = 1
     lst = [(v, k) for k, v in frequency.items()]
-    # Build and sort a list of tuples from lowest to highest frequencies
     lst.sort(reverse=True)
     return lst
 
 
-# A helper function to the build_tree()
 def sort_values(nodes_list, node):
     node_value, char1 = node.value
     index = 0
@@ -154,8 +151,6 @@ def sort_values(nodes_list, node):
         index += 1
 
 
-# Build a Huffman Tree: nodes are stored in list with their values (frequencies) in descending order.
-# Two nodes with the lowest frequencies form a tree node. That node gets pushed back into the list and the process repeats
 def build_tree(data):
     lst = return_frequency(data)
     nodes_list = []
@@ -179,8 +174,6 @@ def build_tree(data):
     return tree
 
 
-# the function traverses over the huffman tree and returns a dictionary with letter as keys and binary value and value.
-# function get_codes() is for encoding purposes
 def get_codes(root):
     if root is None:
         return {}
@@ -200,8 +193,7 @@ def get_codes(root):
     return char_dict
 
 
-# when we've got the dictionary of binary values and huffman tree, tree encoding is simple
-def huffman_encoding_func(data):
+def huffman_encode(data):
     if data == '':
         return None, ''
     tree = build_tree(data)
@@ -225,22 +217,18 @@ def Build_Tree_Traversal(inorder, preorder):
     return root
 
 def main():
-    sentences_file = open("/Users/roeeshahmoon/PycharmProjects/Huffman_Code/data.txt", "r")
+    sentences_file = open("/Users/roeeshahmoon/PycharmProjects/Huffman_Code/Alice_in_wonderlands.txt", "r")
     sentences = sentences_file.read()
 
-    # print("file:", sentences, sep='\n')
-    # print("-" * 200, '\n')
-
-    print("Encoding State: ")
-    tree_encoded, encoded_data = huffman_encoding_func(sentences)
-    # print('->', encoded_data)
+    print("Encoding State:\n")
+    tree_encoded, encoded_data = huffman_encode(sentences)
 
     lst_inorder = []
     lst_preorder = []
     inorder_traversal(tree_encoded.root, lst_inorder)
     preorder_traversal(tree_encoded.root, lst_preorder)
-    print(lst_inorder)
-    print(lst_preorder)
+    print("lst_inorder:", lst_inorder)
+    print("lst_preorder:", lst_preorder)
 
     with open('/Users/roeeshahmoon/PycharmProjects/Huffman_Code/file_encoded.txt', 'w') as file_encoded:
         file_encoded.write(encoded_data)
@@ -251,8 +239,7 @@ def main():
             file_encoded.write(num)
             file_encoded.write('~')
             char = elm_in[1]
-            if char == "\n":
-                char = '*'
+            char = char.replace('\n', '$')
             file_encoded.write(char)
             file_encoded.write('#')
         file_encoded.write('\n')
@@ -262,8 +249,7 @@ def main():
             file_encoded.write(num)
             file_encoded.write('~')
             char = elm_pre[1]
-            if char == "\n":
-                char = '*'
+            char = char.replace('\n', '$')
             file_encoded.write(char)
             file_encoded.write('#')
         file_encoded.write('\n')
@@ -271,7 +257,7 @@ def main():
     root_build = Build_Tree_Traversal(lst_inorder, lst_preorder)
     tree_build = Tree()
     tree_build.root = root_build
-    print(tree_build)
+    print('\n', tree_build)
 
 if __name__ == "__main__":
     main()
