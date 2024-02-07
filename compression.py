@@ -215,7 +215,7 @@ def huffman_encoding_func(data):
 sentences_file = open("Alice_in_wonderlands.txt", "r")
 sentences = sentences_file.read()
 
-print("fie:", sentences, sep='\n')
+print("file:", sentences, sep='\n')
 print("-" * 200, '\n')
 
 print("Encoding State: ")
